@@ -1,0 +1,14 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+    <form action="/edit" method="post" autocomplete="off">
+        {% include 'base-form.twig' %}
+        <div id="button-row" class="form-group">
+            <button type="submit" class="btn btn-secondary btn-lg">EDIT</button>
+        </div>
+    </form>
+{% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}

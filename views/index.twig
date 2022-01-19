@@ -26,15 +26,25 @@
         <div id="results-wrapper">
             <div class="row">
                 {% for book in books %}
-                    <div class="col-xl-3 col-md-4 col-sm-6 col-xs-12 d-md-flex align-items-md-stretch">
+                    <div class="col-xl-3 col-md-4 col-sm-6 col-xs-12 d-flex align-items-stretch">
                         <div id="book-card" class="card text-dark">
                             <img class="card-img-top" src="/images/uploads/{{ book.cover }}" alt="No book image.">
                             <div class="card-body">
                                 <h3 class="card-title"><b>{{ book.name }}</b></h3>
-                                <p><b>Author:</b>{{ book.author }}</p>
+                                <p><b>Author:</b> {{ book.author }}</p>
                                 <p><b>ISBN:</b> {{ book.isbn }}</p>
                                 <p><b>Publisher:</b> {{ book.publisher }}</p>
                                 <p><b>Release date:</b> {{ book.release_date }}</p>
+                            </div>
+                            <div class="card-footer">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <a href="/delete/{{ book.isbn }}" role="button" class="btn btn-danger">Delete</a>
+                                    </div>
+                                    <div class="col-6">
+                                        <a href="/edit/{{ book.isbn }}"  role="button" class="btn btn-warning">Edit</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

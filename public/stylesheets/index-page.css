@@ -23,11 +23,19 @@
 }
 
 .card-img-top {
-    height: 40vh;
+    height: 25rem;
     object-fit: cover;
 }
 
+.card-footer a  {
+    width: 100%;
+}
+
 #book-card {
+    margin-bottom: 20px;
+}
+
+#main-content .message {
     margin-bottom: 20px;
 }
 
@@ -40,5 +48,33 @@
 @media screen and (min-width: 401px) and (max-width: 991px){
     #no-results-wrapper {
         font-size: 30px;
+    }
+}
+
+@media screen and (max-width: 575px){
+    .card-img-top {
+        height: auto;
+    }
+}
+
+@media screen and (min-width: 576px) and (max-width: 767px){
+    .card-img-top {
+        height: 22rem;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 991px){
+    .card-img-top {
+        height: 20rem;
+    }
+
+    .card-footer a {
+        font-size: 0.89rem;
+    }
+}
+
+@media screen and (min-width: 992px) and (max-width: 1199px){
+    .card-img-top {
+        height: 27rem;
     }
 }

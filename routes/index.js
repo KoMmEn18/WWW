@@ -11,11 +11,18 @@ const upload = multer({
   dest: 'images',
 });
 
-/* GET home page. */
 router.get('/', function(req, res) {
+  var message;
   var books = [];
   var db = new sqlite3.Database(db_name);
   var sql = 'SELECT * FROM book';
+
+  var content = req.query.content;
+  var status = req.query.status;
+  if (content != null && status != null) {
+      message = {status: status, content: content};
+  }
+
   db.each(sql, [], (err, row) => {
     if (err) {
       res.render('index', {message: {status: 'error', content: 'There was an error during database query!'}});
@@ -31,7 +38,7 @@ router.get('/', function(req, res) {
     });
   }, function () {
     db.close();
-    res.render('index', {books: books});
+    res.render('index', {books: books, message: message});
   });
 });
 
@@ -66,7 +73,6 @@ router.post('/add', upload.single('cover'), function(req, res) {
       var extension = path.extname(req.file.originalname).toLowerCase();
       var cover = isbn.concat(extension);
       var targetPath = path.join(__dirname, "../public/images/uploads", isbn.concat(extension));
-      console.log(targetPath);
 
       if (extension == ".png" || extension == ".jpg" || extension == ".jpeg") {
         fs.rename(tempPath, targetPath, err => {
@@ -130,4 +136,45 @@ router.post('/add', upload.single('cover'), function(req, res) {
   });
 });
 
+router.get('/delete/:isbn', function (req, res) {
+  var _isbn = req.params.isbn;
+  var db = new sqlite3.Database(db_name);
+
+  var sql = 'SELECT cover FROM book WHERE isbn = ?';
+  db.get(sql, _isbn, (err, row) => {
+    if (err) {
+      res.redirect('/?content=There was an error during database query&status=error');
+      return;
+    }
+
+    if (row && row.cover) {
+      var coverName = row.cover;
+      var targetPath = path.join(__dirname, "../public/images/uploads", coverName);
+
+      db.run('DELETE FROM book WHERE isbn=?', _isbn, function (err) {
+        if (err) {
+          res.redirect('/?content=There was an error during database query&status=error');
+          return;
+        }
+
+        fs.unlink(targetPath, err => {
+          if (err) {
+            res.redirect('/?content=There was an error during image delete&status=error');
+            return;
+          }
+
+          res.redirect('/?content=Book successfully removed from database&status=success');
+        });
+      });
+    } else {
+      res.redirect('/?content=Book of given ISBN does not exist!&status=error');
+    }
+  });
+
+  db.close();
+});
+
+router.get('/edit/:isbn', function(req, res) {
+  res.render('edit-book', {});
+});
 module.exports = router;
