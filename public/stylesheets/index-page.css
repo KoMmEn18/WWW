@@ -1,0 +1,44 @@
+#no-results-wrapper {
+    margin-top: 50px;
+    margin-left: 20px;
+    margin-right: 20px;
+    font-size: 40px;
+    text-align: center;
+}
+
+#no-results-wrapper > .row {
+    justify-content: center;
+}
+
+#results-wrapper {
+    font-size: 20px;
+}
+
+.btn-lg {
+    font-size: 1.5rem;
+}
+
+.card-title {
+    font-weight: 900;
+}
+
+.card-img-top {
+    height: 40vh;
+    object-fit: cover;
+}
+
+#book-card {
+    margin-bottom: 20px;
+}
+
+@media screen and (max-width: 400px){
+    #no-results-wrapper {
+        font-size: 30px;
+    }
+}
+
+@media screen and (min-width: 401px) and (max-width: 991px){
+    #no-results-wrapper {
+        font-size: 30px;
+    }
+}

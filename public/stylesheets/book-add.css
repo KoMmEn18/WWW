@@ -1,0 +1,8 @@
+#button-row {
+    margin-top: 50px;
+    text-align: center;
+}
+
+#cover {
+    transform: translate(-10%, -10%) scale(0.8);
+}

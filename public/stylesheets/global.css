@@ -1,0 +1,130 @@
+html {
+  height: 100%;
+}
+
+body {
+  background-image: url("/images/background.jpg");
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-position-x: center;
+  background-position-y: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  height: 100%;
+}
+
+body .container {
+  padding: 100px 15px 100px;
+  height: 100%;
+}
+
+body .container > .row {
+  padding: 0 20px 0;
+}
+
+header {
+  font-family: 'Oswald', sans-serif;
+}
+
+header > nav > .container {
+  padding: 0;
+}
+
+#header-row {
+  width: 100%;
+  align-items: center;
+  margin: 0;
+}
+
+#navbar-text {
+  text-transform: uppercase;
+  font-size: 40px;
+  color: white;
+  letter-spacing: 3px;
+}
+
+#navbar-menu {
+  font-size: 25px;
+  letter-spacing: 2px;
+}
+
+#navbar-menu li:first-of-type {
+  margin-right: 30px;
+}
+
+#navbar-menu li a:hover {
+  color: white;
+  transition-duration: 0.3s;
+}
+
+#main-content {
+  font-family: 'Inconsolata', monospace;
+  color: whitesmoke;
+  background-color: #2d3132;
+  font-size: 25px;
+}
+
+footer {
+  color: white;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+.message {
+  margin-left: 0px;
+  margin-right: 0px;
+  border-radius: 5px;
+  font-size: 20px;
+}
+
+.message-error {
+  border: 1px solid red;
+}
+
+.message-success {
+  border: 1px solid limegreen;
+}
+
+
+.message p {
+  width: 100%;
+  margin-top: 0.7rem;
+  margin-bottom: 0.7rem;
+}
+
+@media screen and (max-width: 400px){
+  #navbar-text {
+    font-size: 20px;
+  }
+
+  #navbar-menu {
+    font-size: 15px;
+  }
+
+  #mobile-navbar-toogler {
+    transform: scale(0.7);
+  }
+}
+
+@media screen and (min-width: 401px) and (max-width: 991px){
+  #navbar-text {
+    font-size: 30px;
+  }
+
+  #navbar-menu {
+    font-size: 20px;
+  }
+
+  #mobile-button-wrapper {
+    display: block;
+  }
+}
+
+@media screen and (min-width: 992px){
+  #mobile-button-wrapper {
+    display: none;
+  }
+}

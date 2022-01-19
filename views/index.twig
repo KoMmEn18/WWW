@@ -1,0 +1,49 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+      {% if not books %}
+          <div id="no-results-wrapper">
+              <div class="row">
+                  <figure>
+                      <img src="/images/sad2.png" alt="Sad face" width="200px" height="200px">
+                  </figure>
+              </div>
+              <div class="row">
+                  <p>
+                      There are no existing books in database.
+                  </p>
+              </div>
+              <div class="row">
+                  <p>
+                      Add your first book right now!
+                  </p>
+              </div>
+              <div class="row">
+                  <a href="/add" class="btn btn-secondary btn-lg">Add book</a>
+              </div>
+          </div>
+      {% else %}
+        <div id="results-wrapper">
+            <div class="row">
+                {% for book in books %}
+                    <div class="col-xl-3 col-md-4 col-sm-6 col-xs-12 d-md-flex align-items-md-stretch">
+                        <div id="book-card" class="card text-dark">
+                            <img class="card-img-top" src="/images/uploads/{{ book.cover }}" alt="No book image.">
+                            <div class="card-body">
+                                <h3 class="card-title"><b>{{ book.name }}</b></h3>
+                                <p><b>Author:</b>{{ book.author }}</p>
+                                <p><b>ISBN:</b> {{ book.isbn }}</p>
+                                <p><b>Publisher:</b> {{ book.publisher }}</p>
+                                <p><b>Release date:</b> {{ book.release_date }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+      {% endif %}
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel='stylesheet' href='/stylesheets/index-page.css' />
+{% endblock %}
