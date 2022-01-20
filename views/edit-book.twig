@@ -1,7 +1,7 @@
 {% extends 'layout.twig' %}
 
 {% block content %}
-    <form action="/edit" method="post" autocomplete="off">
+    <form action="/edit/{{ isbn }}" method="post" autocomplete="off">
         {% include 'base-form.twig' %}
         <div id="button-row" class="form-group">
             <button type="submit" class="btn btn-secondary btn-lg">EDIT</button>
@@ -10,5 +10,5 @@
 {% endblock %}
 
 {% block stylesheets %}
-
+    <link rel='stylesheet' href='/stylesheets/book-edit.css' />
 {% endblock %}

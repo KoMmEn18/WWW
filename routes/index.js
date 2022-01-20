@@ -175,6 +175,141 @@ router.get('/delete/:isbn', function (req, res) {
 });
 
 router.get('/edit/:isbn', function(req, res) {
-  res.render('edit-book', {});
+  var _isbn = req.params.isbn;
+  var db = new sqlite3.Database(db_name);
+
+  var sql = 'SELECT * FROM book WHERE isbn = ?';
+  db.get(sql, _isbn, (err, row) => {
+    if (err) {
+      res.redirect('/?content=There was an error during database query&status=error');
+      return;
+    }
+
+    if (row) {
+      res.render('edit-book', {form: row, isbn: _isbn});
+    } else {
+      res.redirect('/?content=Book of given ISBN does not exist!&status=error');
+    }
+  });
 });
+
+router.post('/edit/:isbn', function (req, res) {
+  var _isbn = req.params.isbn;
+  var name = req.body.name;
+  var isbn = req.body.isbn;
+  var author = req.body.author;
+  var publisher = req.body.publisher;
+  var release_date = req.body.release_date;
+
+  if (!name || !isbn || !author || !publisher || !release_date) {
+    res.render('edit-book', {isbn: _isbn, form: {name: name, isbn: isbn, author: author, publisher: publisher, release_date: release_date}, message: {status: 'error', content: 'All of fields are required!'}});
+    return;
+  }
+
+  var db = new sqlite3.Database(db_name);
+  var sql = 'SELECT COUNT(1) as result FROM book WHERE isbn = ?';
+  db.get(sql, [isbn], (err, row) => {
+    if (err) {
+      res.render('edit-book', {
+        isbn: _isbn,
+        form: {
+          name: name,
+          isbn: isbn,
+          author: author,
+          publisher: publisher,
+          release_date: release_date
+        }, message: {status: 'error', content: 'There was an error during database query!'}
+      });
+      return;
+    }
+    var exist = row.result;
+    if (exist && isbn != _isbn) {
+      res.render('edit-book', {
+        isbn: _isbn,
+        form: {
+          name: name,
+          isbn: isbn,
+          author: author,
+          publisher: publisher,
+          release_date: release_date
+        }, message: {status: 'error', content: 'Book of given ISBN already exist in database!'}
+      });
+    } else {
+      var sql = 'SELECT cover FROM book WHERE isbn = ?';
+      db.get(sql, [_isbn], (err, row) => {
+        if (err) {
+          res.render('edit-book', {
+            isbn: _isbn,
+            form: {
+              name: name,
+              isbn: isbn,
+              author: author,
+              publisher: publisher,
+              release_date: release_date
+            }, message: {status: 'error', content: 'There was an error during database query!'}
+          });
+          return;
+        }
+
+        if (row) {
+          var coverName = row.cover;
+          var extension = path.extname(coverName)
+          var newCoverName = isbn.concat(extension);
+
+          var basePath = path.join(__dirname, "../public/images/uploads", coverName);
+          var targetPath = path.join(__dirname, "../public/images/uploads", newCoverName);
+
+          fs.rename(basePath, targetPath, err => {
+            if (err) {
+              res.render('edit-book', {
+                isbn: _isbn,
+                form: {
+                  name: name,
+                  isbn: isbn,
+                  author: author,
+                  publisher: publisher,
+                  release_date: release_date
+                }, message: {status: 'error', content: 'There was an error while copying files!'}
+              });
+              return;
+            }
+
+            db.run('UPDATE book SET isbn = ?, name = ?, author = ?, publisher = ?, release_date = ?, cover = ? WHERE isbn = ?', [isbn, name, author, publisher, release_date, newCoverName, _isbn], (err) => {
+              if (err) {
+                res.render('edit-book', {
+                  isbn: _isbn,
+                  form: {
+                    name: name,
+                    isbn: isbn,
+                    author: author,
+                    publisher: publisher,
+                    release_date: release_date
+                  }, message: {status: 'error', content: 'There was an error while editing data!'}
+                });
+                return;
+              }
+              res.render('edit-book', {
+                isbn: isbn,
+                form: {name: name, isbn: isbn, author: author, publisher: publisher, release_date: release_date},
+                message: {status: 'success', content: 'Book successfully edited'}
+              });
+            });
+          });
+        } else {
+          res.render('edit-book', {
+            isbn: _isbn,
+            form: {
+              name: name,
+              isbn: isbn,
+              author: author,
+              publisher: publisher,
+              release_date: release_date
+            }, message: {status: 'error', content: 'There was an error while editing data!'}
+          });
+        }
+      });
+    }
+  });
+});
+
 module.exports = router;
