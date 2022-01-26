@@ -37,9 +37,9 @@ router.get('/', function(req, res) {
       cover: row.cover
     });
   }, function () {
-    db.close();
     res.render('index', {books: books, message: message});
   });
+  db.close();
 });
 
 router.get('/add', function(req, res) {
@@ -170,7 +170,6 @@ router.get('/delete/:isbn', function (req, res) {
       res.redirect('/?content=Book of given ISBN does not exist!&status=error');
     }
   });
-
   db.close();
 });
 
@@ -191,6 +190,7 @@ router.get('/edit/:isbn', function(req, res) {
       res.redirect('/?content=Book of given ISBN does not exist!&status=error');
     }
   });
+  db.close();
 });
 
 router.post('/edit/:isbn', function (req, res) {
